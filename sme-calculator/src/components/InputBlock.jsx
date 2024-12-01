@@ -1,22 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setValue } from "../store/Slices/fields";
 
-export const InputBlock = ({}) => {
+export const InputBlock = ({ id, mainText, comment, counter, state_name }) => {
+  const value_from_store = useSelector((state) => state[`${state_name}`]);
   const dispatch = useDispatch();
 
-  const value = useSelector((state) => state.fields.value);
+  const [result, setResult] = useState(0);
+
+  const count_poinst = (event) => {
+    const target = event.target.value;
+
+    const points = parseInt(target) * 2;
+    dispatch(setValue({ [state_name]: points }));
+    setResult(points);
+  };
 
   return (
     <>
-      <div>{value}</div>
-      <button
-        onClick={() => {
-          dispatch(setValue("Valera"));
-        }}
-      >
-        click me
-      </button>
+      <div>{mainText}</div>
+      <div>
+        <input
+          type="number"
+          id={id}
+          value={value_from_store}
+          onChange={(e) => {
+            count_poinst(e);
+          }}
+        />
+      </div>
+      <div>{result}</div>
     </>
   );
 };

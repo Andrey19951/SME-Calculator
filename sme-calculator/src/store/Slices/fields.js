@@ -1,7 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: "Andrey",
+  CDD_CoLOs: "",
+  Lmc: "",
+  Ssmpc: "",
+  Pr: "",
+  RonpDr: "",
+  Vscc: "",
+  Vo: "",
+  VcSprbSME: "",
+  VcSvwcpp: "",
+  TcKb: "",
+  TcCb: "",
+  AtcCc: "",
+  AtcMc: "",
+  AtcSc: "",
+  Cotrbec: "",
 };
 
 export const fieldSlice = createSlice({
@@ -9,7 +23,7 @@ export const fieldSlice = createSlice({
   initialState,
   reducers: {
     setValue(state, action) {
-      return { ...state, value: action.payload };
+      return { ...state, ...action.payload };
     },
   },
 });

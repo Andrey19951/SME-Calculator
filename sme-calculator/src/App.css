@@ -36,3 +36,32 @@
     transform: rotate(360deg);
   }
 }
+
+* {
+  box-sizing: border-box;
+}
+
+.main {
+  width: 800px;
+  display: flex;
+}
+
+.working-place {
+  width: 100%;
+}
+
+
+.working-place__row {
+  width: 100%;
+  display: flex;
+}
+
+.working-place__row > *:nth-child(1) {
+  flex: 6
+}
+.working-place__row > *:nth-child(2) {
+  flex: 1
+}
+.working-place__row > *:nth-child(3) {
+  flex: 1
+}
