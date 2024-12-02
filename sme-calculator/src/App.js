@@ -10,12 +10,17 @@ function App() {
   const [PointsTotal, SetPointsTotal] = useState("");
   useEffect(() => {
     const result_values = Object.values(result_points).reduce((sum, el) => {
-      sum += el ? parseInt(el) : 0;
+      sum += el ? parseFloat(el) : 0;
       return sum;
     }, 0);
 
-    SetPointsTotal(result_values);
-  });
+    if (result_values) {
+      const result = result_values.toFixed(1).toString();
+      SetPointsTotal(result);
+    } else {
+      SetPointsTotal("");
+    }
+  }, [result_points]);
 
   return (
     <>
@@ -29,7 +34,11 @@ function App() {
           {field_parameters.map((el, i) => {
             return (
               <div className="working-place__row" key={i}>
-                <InputBlock mainText={el.mainText} state_name={el.state_name} />
+                <InputBlock
+                  mainText={el.mainText}
+                  state_name={el.state_name}
+                  counting_function={el.counting_functions}
+                />
               </div>
             );
           })}
