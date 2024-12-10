@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setValue } from "../store/Slices/fields";
 
+
+
 export const InputBlock = ({ id, mainText, comment, counter, state_name, counting_function }) => {
   const value_from_store = useSelector((state) => state[`${state_name}`]);
   const dispatch = useDispatch();

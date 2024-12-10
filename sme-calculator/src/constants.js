@@ -3,6 +3,9 @@ export const field_parameters = [
     mainText: "CDD (Course outline + LOs)",
     comment: "(please indicate how many CDDs have you created)",
     state_name: "CDD_CoLOs",
+    excel_formula: (num_of_row) => {
+      return `=B${num_of_row}*2`
+    },
     counting_functions: (value) => {
       if (!value) {
         return "";
@@ -11,6 +14,7 @@ export const field_parameters = [
       result = result.toString();
       return result;
     },
+    
   },
   {
     mainText: "Lesson materials collection",

@@ -2,10 +2,38 @@ import logo from "./logo.svg";
 import "./App.css";
 import { InputBlock } from "./components/InputBlock";
 import { field_parameters } from "./constants";
-import { useSelector } from "react-redux";
+import { useSelector, useStore } from "react-redux";
 import { useEffect, useState } from "react";
 
+import ReactExport from "react-data-export";
+import JSZip from "jszip";
+
+import XLSX from "xlsx";
+
 function App() {
+  /* const sheetData = [
+    ["Value", "Formula"],
+    [10, { f: "A2*2" }],
+  ]; */
+
+  const [sheetData, SetSheetData] = useState([]);
+
+  const generateExcelWithFormulas = (sheetData) => {
+    // Создаем новую рабочую книгу
+    const workbook = XLSX.utils.book_new();
+
+    // Данные для листа
+
+    // Создаем рабочий лист
+    const worksheet = XLSX.utils.aoa_to_sheet(sheetData);
+
+    // Добавляем лист в книгу
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+    // Генерируем и скачиваем файл
+    XLSX.writeFile(workbook, "example_with_formulas.xlsx");
+  };
+
   const result_points = useSelector((state) => state.fields);
   const [PointsTotal, SetPointsTotal] = useState("");
   useEffect(() => {
@@ -20,6 +48,24 @@ function App() {
     } else {
       SetPointsTotal("");
     }
+  }, [result_points]);
+
+  useEffect(() => {
+    const array_of_cells = [];
+
+    for (const key in result_points) {
+      if (result_points[key]) {
+        const needed_object = field_parameters.find((el) => {
+          return el.state_name == key;
+        });
+
+        const title = needed_object.mainText;
+        const formula = needed_object.excel_formula(1);
+        array_of_cells.push([title, result_points[key], { f: formula }]);
+      }
+    }
+
+    SetSheetData(array_of_cells);
   }, [result_points]);
 
   return (
@@ -48,6 +94,15 @@ function App() {
           <div>{PointsTotal}</div>
         </div>
       </div>
+
+      <p>Click the button below to export</p>
+      <button
+        onClick={() => {
+          generateExcelWithFormulas(sheetData);
+        }}
+      >
+        Download Excel
+      </button>
     </>
   );
 }
