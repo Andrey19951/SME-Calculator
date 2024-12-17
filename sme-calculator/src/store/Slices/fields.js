@@ -28,8 +28,11 @@ export const fieldSlice = createSlice({
         ...new_state, action.payload
       ]
     },
+    resetValues(state) {
+      return initialState
+    }
   },
 });
 
-export const { setValue } = fieldSlice.actions;
+export const { setValue, resetValues } = fieldSlice.actions;
 export default fieldSlice.reducer;

@@ -2,23 +2,23 @@ import logo from "./logo.svg";
 import "./App.css";
 import { InputBlock } from "./components/InputBlock";
 import { field_parameters } from "./constants";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { resetValues } from "./store/Slices/fields";
 
 import { Workbook } from "exceljs";
 import { saveAs } from "file-saver";
 
 function App() {
+  const dispatch = useDispatch();
+  const resetButtonEvent = () => {
+    dispatch(resetValues());
+  };
+
   const headerCellStyle = {
     font: { name: "Calibri", bold: true, color: { argb: "FF000000" }, size: 9 },
     fill: { type: "pattern", pattern: "solid", fgColor: { argb: "FF41D5E9" } },
     alignment: { horizontal: "center", vertical: "middle" },
-    /* border: {
-      top: { style: "thin", color: { argb: "FF000000" } },
-      right: { style: "thin", color: { argb: "FF000000" } },
-      bottom: { style: "thin", color: { argb: "FF000000" } },
-      left: { style: "thin", color: { argb: "FF000000" } },
-    }, */
   };
 
   const mainTextStyle = {
@@ -58,7 +58,7 @@ function App() {
       right: { style: "thin", color: { argb: "FF000000" } },
       bottom: { style: "thin", color: { argb: "FF000000" } },
       left: { style: "thin", color: { argb: "FF000000" } },
-    }
+    },
   };
 
   const [sheetData, setSheetData] = useState([]);
@@ -133,6 +133,7 @@ function App() {
   const [PointsTotal, setPointsTotal] = useState("");
 
   useEffect(() => {
+    console.log(result_points);
     const result_values = result_points.reduce((sum, el) => {
       sum += el.points ? parseFloat(el.points) : 0;
       return sum;
@@ -167,7 +168,10 @@ function App() {
           { v: "Text-Based Activities", s: sectionHeaderStyle },
           "",
           "",
-          { s: valueCellStyle, f: "=ROUND(SUM(C3,C5,C7,C9,C11,C14,C16,C18,C20,C23,C25,C27,C29,C31,C33),1)" },
+          {
+            s: valueCellStyle,
+            f: "=ROUND(SUM(C3,C5,C7,C9,C11,C14,C16,C18,C20,C23,C25,C27,C29,C31,C33),1)",
+          },
         ]);
         cells_counter += 1;
       }
@@ -196,7 +200,10 @@ function App() {
 
       const main_field_row = [
         { v: title, s: mainTextStyle },
-        { v: needed_state_field?.value ? parseInt(needed_state_field.value) : 0, s: valueCellStyle},
+        {
+          v: needed_state_field?.value ? parseInt(needed_state_field.value) : 0,
+          s: valueCellStyle,
+        },
         { f: formula, s: valueCellStyle },
         "",
       ];
@@ -249,6 +256,7 @@ function App() {
       >
         Download Excel
       </button>
+      <button onClick={() => resetButtonEvent()}>Reset</button>
     </>
   );
 }

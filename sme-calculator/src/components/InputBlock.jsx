@@ -15,8 +15,9 @@ export const InputBlock = ({
   const initial_state = useSelector((state) => state.fields);
   const needed_element = initial_state.find((el) => el.name === state_name);
   const value_from_store = needed_element.value;
-  const [fieldValue, setfieldValue] = useState(value_from_store)
-  const [result, setResult] = useState("");
+  const result_from_store = needed_element.points;
+  const [fieldValue, setfieldValue] = useState(value_from_store);
+  const [result, setResult] = useState(result_from_store);
 
   const count_poinst = (event) => {
     const target = event.target.value;
@@ -30,11 +31,15 @@ export const InputBlock = ({
     };
 
     dispatch(setValue(new_field_state));
-    setfieldValue(target)
+    setfieldValue(target);
     setResult(points);
   };
 
-  
+  useEffect(() => {
+    setfieldValue(value_from_store);
+    setResult(result_from_store);
+  }, [value_from_store, result_from_store]);
+
   return (
     <>
       <div>{mainText}</div>
